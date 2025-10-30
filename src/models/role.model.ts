@@ -1,6 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-const RoleSchema = new Schema({
+export interface IRole extends Document {
+  role: String,
+  description?: String,
+  active: boolean;
+}
+
+const RoleSchema = new Schema<IRole>({
   role: { type: String, required: true, unique: true },
   description: { type: String },
   active: { type: Boolean, default: true }
@@ -9,4 +15,4 @@ const RoleSchema = new Schema({
   timestamps: true
 });
 
-export default model("Role", RoleSchema) // alias
+export default model<IRole>("Role", RoleSchema) // alias

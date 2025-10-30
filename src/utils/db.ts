@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
+import path from "path";
+import dotenv from "dotenv";
+dotenv.config({
+  path: path.resolve(__dirname, '..', '.env')
+});
 
+const MONGO_URI = process.env.MONGO_URI || "mystring";
 export const connectDB = async() => {
   try {
-    await mongoose.connect("mongodb+srv://kostas8:dlxTsOisB3fh6MS0@cluster0.l5o5nxa.mongodb.net/codingfactory?retryWrites=true&w=majority");
+    console.log("Attempting to connect with URI:", MONGO_URI);
+    await mongoose.connect(MONGO_URI);
     console.log("MongoDB connected");
   } catch (err) {
     console.log("MongoDB connection error:", err);
