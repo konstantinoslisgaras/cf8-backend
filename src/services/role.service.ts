@@ -9,10 +9,10 @@ export const createRole = async(payload: Partial<IRole>) => {
   return result.save();
 }
 
-export const updateRole = async(id: string, payload: Partial<IRole>) => {
+export const updateRole = async(id:string, payload: Partial<IRole>) => {
   return Role.findByIdAndUpdate(id, payload, {new: true});
 }
 
-export const deleteRole = async(id: string) => {
+export const deleteRole = async(id:string) =>{
   return Role.findByIdAndDelete(id);
 }

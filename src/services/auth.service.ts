@@ -1,13 +1,13 @@
-import User from "../models/user.model";
-import { AuthPayload } from "../models/auth.model";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import dotenv from 'dotenv'
+import User from '../models/user.model';
+import { AuthPayload } from '../models/auth.model';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 dotenv.config()
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_SECRET = process.env.JWT_SECRET || '';
 
-export const login = async(username: string, password: string) => {
+export const login = async(username:string, password:string) => {
   const user = await User.findOne({username}).populate('roles');
   if (!user) return null;
 
@@ -20,7 +20,7 @@ export const login = async(username: string, password: string) => {
     roles: user.roles
   }
 
-  const token = jwt.sign(payload as any, JWT_SECRET, {expiresIn: '1h'});
-  console.log(token)
+  const token = jwt.sign(payload as any, JWT_SECRET, {expiresIn: '1h'} );
+  console.log(token);
   return {user, token}
 }
