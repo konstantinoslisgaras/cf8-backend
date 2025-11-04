@@ -6,7 +6,7 @@ export const findAllRoles = async() => {
 
 export const createRole = async(payload: Partial<IRole>) => {
   const result = new Role(payload);
-  return result;
+  return result.save();
 }
 
 export const updateRole = async(id: string, payload: Partial<IRole>) => {

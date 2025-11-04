@@ -1,6 +1,14 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
-export interface IPhone {type: String; number: String}
+export interface IPhone {type: string; number: string}
+
+export interface IAddress {
+  area?:string;
+  street?: string;
+  number?: string;
+  po?: string;
+  municipality?: string;
+}
 
 export interface IUser extends Document {
   username: string;
@@ -15,33 +23,52 @@ export interface IUser extends Document {
     po?: string;
     municipality?: string;
   },
-    phone?: IPhone[];
+  phone?: IPhone[],
+  roles: Types.ObjectId[]
 }
 
-const PhoneSchema = new Schema({ // most optimal way for defining Objects inside Objects
-  type: String, 
-  number: String
-});
-// {_id: false}) // for no new id
+const PhoneSchema = new Schema<IPhone>({
+    type: String, 
+    number: String
+  },
+  // {_id:false} inserts _id or not
+)
 
-const UserSchema = new Schema({
-  username: { type: String, required: [true, "Username is required"], unique: true,
-    max: 15, min: 4, trim: true, lowercase: true },
-  password: { type: String, required: true },
+const AddressSchema = new Schema<IAddress>({
+  area: String,
+  street: String,
+  number: String,
+  po: String,
+  municipality: String
+})
+
+const UserSchema = new Schema<IUser>({
+  username: { 
+    type: String, 
+    required: [true, "Username is required field"], 
+    unique: true,
+    max:20,
+    min: 4,
+    trim: true,
+    lowercase: true 
+  },
+  password: { type: String, required: true},
   firstname: String,
   lastname: { type: String },
-  email: { type: String, index: true},
-  address: {
-    area: String,
-    street: String,
-    number: String,
-    po: String,
-    municipality: String
-  },
-  phone: {type: [PhoneSchema], null: true}
-}, {
+  email: {type: String, index: true},
+  // address : {
+  //   area: String,
+  //   street: String,
+  //   number: String,
+  //   po: String,
+  //   municipality: String
+  // },
+  address: AddressSchema,
+  phone: { type: [PhoneSchema], null: true },
+  roles: [{type: Schema.Types.ObjectId, ref:"Role", required: true}]
+},{
   collection: "users",
-  timestamps: true
+  timestamps: true,
 });
 
 export default model("User", UserSchema);
